@@ -13,6 +13,7 @@ use EasySwoole\Core\AbstractInterface\Singleton;
 use EasySwoole\Core\Component\Cluster\Communicate\SysCommand;
 use EasySwoole\Core\Component\Event;
 use EasySwoole\Core\Component\Cluster\Communicate\CommandBean;
+use EasySwoole\Core\Component\Rpc\Server\ServiceManager;
 use EasySwoole\Core\Component\Rpc\Server\ServiceNode;
 
 class CommandRegister extends Event
@@ -30,9 +31,10 @@ class CommandRegister extends Event
             if(is_array($services)){
                 foreach ($services as $item){
                     $node = new ServiceNode($item);
-                    var_dump($node->toArray());
+                    ServiceManager::getInstance()->addServiceNode($node);
                 }
             }
+            var_dump(count(ServiceManager::getInstance()->allServiceNodes()));
         });
     }
 

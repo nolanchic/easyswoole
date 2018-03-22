@@ -44,7 +44,9 @@ class TickEvent extends Container
 
         //gc命令不用广播 ，不返回command
         $this->set('gc',function (){
-            //清理过期的RPC节点和集群节点
+            //清理RPC
+            ServiceManager::getInstance()->gc();
+            //清理serverNode
         });
     }
 

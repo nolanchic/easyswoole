@@ -55,6 +55,7 @@ class ServiceManager
 
     public function addServiceNode(ServiceNode $bean):void
     {
+        $bean->setLastHeartBeat(time());
         $this->getTable()->set($this->generateKey($bean),$bean->toArray());
     }
 
@@ -182,8 +183,13 @@ class ServiceManager
         return TableManager::getInstance()->get($this->tableName);
     }
 
-    private function generateKey(ServiceNode $serviceNode):string
+    private function generateKey(ServiceNode $serviceNode,$local = false):string
     {
-        return substr(md5($serviceNode->getServerId().$serviceNode->getServiceName()), 8, 16);
+        if($local){
+            $serverId = Config::getInstance()->getServerId();
+        }else{
+            $serverId = $serviceNode->getServerId();
+        }
+        return substr(md5($serverId.$serviceNode->getServiceName()), 8, 16);
     }
 }
