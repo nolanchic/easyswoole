@@ -170,12 +170,10 @@ class ServiceManager
         $result = [];
         $list = $this->allServiceNodes();
         if(is_array($list)){
-            foreach ($list as $service){
-                foreach ($service as $key => $item){
-                    $temp = new ServiceNode($item);
-                    if($key === $this->generateKey($temp)){
-                        $result[$key] = $item;
-                    }
+            foreach ($list as $key => $service){
+                $temp = new ServiceNode($service);
+                if($key === $this->generateKey($temp)){
+                    $result[$key] = $service;
                 }
             }
         }
