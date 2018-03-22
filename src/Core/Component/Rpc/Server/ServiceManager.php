@@ -147,18 +147,15 @@ class ServiceManager
         $time = time();
         $list = $this->allServiceNodes();
         if(is_array($list)){
-            foreach ($list as $service){
-                foreach ($service as $key => $item){
-                    if($item instanceof ServiceNode){
-                        //不对自身节点做gc
-                        if($key === $this->generateKey($item)){
-                            continue;
-                        }
-                        if($time - $item->getLastHeartBeat() > $timeOut){
-                            $failList[$key] = $item;
-                            $this->deleteServiceById($key);
-                        }
-                    }
+            foreach ($list as $key => $service){
+                $item = new ServiceNode($service);
+                //不对自身节点做gc
+                if($key === $this->generateKey($item)){
+                    continue;
+                }
+                if($time - $item->getLastHeartBeat() > $timeOut){
+                    $failList[$key] = $item;
+                    $this->deleteServiceById($key);
                 }
             }
         }
